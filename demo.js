@@ -1,76 +1,73 @@
 'use strict';
 (function () {
 
-    /** prototypes
-     function Person(firstName,lastName){
-        this.firstName = firstName;
-        this.lastName = lastName;
+    class Person {
+        constructor(firstName, lastName, age) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.age = age;
+        }
+
+        static adultAge = 18;
+
+        get fullName() {
+            return this.firstName + ' ' + this.lastName
+        }
+
+        set fullName(fullName) {
+            let nameParts = fullName.split(' ')
+            this.firstName = nameParts[0]
+            this.lastName = nameParts[1]
+        }
+
+        isAdult() {
+            return this.age > 18;
+        }
     }
 
-     Person.prototype.age = 29;
-
-     let marcin = new Person('Marcin', 'Peck')
-
-
-     display(marcin.firstName)
-
-     display(Person.prototype)
-     display(marcin.__proto__);
-     display(Person.prototype === marcin.__proto__)
-
-     marcin.__proto__.age = 19;
-
-     display('has property? ' + marcin.hasOwnProperty('age'))
-
-     marcin.age = 30;
-
-     display('has property? ' + marcin.hasOwnProperty('age'))
-
-     display(marcin.age)
-     display(marcin.__proto__.age)
-     **/
-
-    /**inheritance **/
-
-    function Person(firstName, lastName, age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-
-        Object.defineProperty(this, 'fullName', {
-
-            get: function () {
-                return this.firstName + ' ' +this.lastName
-
-            }, enumerable: true
+    class Student extends Person {
+        constructor(firstName, lastName, age) {
+            super(firstName, lastName, age)
+            this._enrolledCourses = []
+        }
 
 
-        });
-    }
-
-    function Student(firstName, lastName, age) {
-        Person.call(this, firstName, lastName, age)
-        this._enrolledCourses = []
-        this.enroll = function (courseId) {
+        enroll(courseId) {
             this._enrolledCourses.push(courseId);
 
         };
 
-        this.getCourses = function () {
+        getCourses() {
             return this.fullName + " on courses: " + this._enrolledCourses.join(', ');
+        };
+
+        static fromPerson(person){
+            return new Student(person.firstName, person.lastName, person.age)
         };
     }
 
-    Student.prototype = Object.create(Person.prototype);
-    Student.prototype.constructor = Student;
+    Object.defineProperty(Person.prototype, 'fullName', {enumerable: true})
 
     let marcin = new Student('Marcin', 'Peck', 30);
-    marcin.enroll('MATH')
 
-    display(marcin.__proto__);
-    display(marcin.__proto__.__proto__);
-    display(marcin.__proto__.__proto__.__proto__);
+    marcin.enroll('math');
+    marcin.enroll('english');
 
+    display(marcin);
+    display(marcin.fullName);
+    marcin.fullName = 'Marcin Pecku';
+    display(marcin.fullName);
+    display(marcin.isAdult());
     display(marcin.getCourses());
+
+    let pawel = new Person('Pawel', 'Peck', '35')
+
+    let studentPawel = Student.fromPerson(pawel)
+    display(studentPawel);
+
+    display(Person.adultAge);
+
+
+
 
 })();
