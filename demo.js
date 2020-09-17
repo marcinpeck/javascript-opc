@@ -1,42 +1,76 @@
 'use strict';
 (function () {
 
+    /** prototypes
+     function Person(firstName,lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
-    let person = {
-        firstName: 'Marcin',
-        lastName: 'Peck',
-        age: 30
-    };
+     Person.prototype.age = 29;
 
-    display(person.firstName);
-
-    //Object.defineProperty(person,'firstName', {writable: false});
-    //Object.freeze(person)
-    // person.firstName = 'Ala'; // fail
-
-   //Object.defineProperty(person, 'firstName', {configurable: false});
-  // Object.defineProperty(person,'firstName', {enumerable: false});  // fail
-
-  Object.defineProperty(person, 'fullName',
-      {
-        get() {
-          return this.firstName + ' ' + this.lastName
-        },
-        set(v) {
-          let nameParts = v.split(' ');
-          this.firstName = nameParts[0];
-          this.lastName = nameParts[1];
-        }
-      });
-
-  display(person.fullName);
-  person.fullName = "Ala Kotecka";
-  display(person.fullName)
+     let marcin = new Person('Marcin', 'Peck')
 
 
-  //this will not work if configurable set to false
-  delete person.firstName;
+     display(marcin.firstName)
 
-  display(person)
+     display(Person.prototype)
+     display(marcin.__proto__);
+     display(Person.prototype === marcin.__proto__)
+
+     marcin.__proto__.age = 19;
+
+     display('has property? ' + marcin.hasOwnProperty('age'))
+
+     marcin.age = 30;
+
+     display('has property? ' + marcin.hasOwnProperty('age'))
+
+     display(marcin.age)
+     display(marcin.__proto__.age)
+     **/
+
+    /**inheritance **/
+
+    function Person(firstName, lastName, age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+
+        Object.defineProperty(this, 'fullName', {
+
+            get: function () {
+                return this.firstName + ' ' +this.lastName
+
+            }, enumerable: true
+
+
+        });
+    }
+
+    function Student(firstName, lastName, age) {
+        Person.call(this, firstName, lastName, age)
+        this._enrolledCourses = []
+        this.enroll = function (courseId) {
+            this._enrolledCourses.push(courseId);
+
+        };
+
+        this.getCourses = function () {
+            return this.fullName + " on courses: " + this._enrolledCourses.join(', ');
+        };
+    }
+
+    Student.prototype = Object.create(Person.prototype);
+    Student.prototype.constructor = Student;
+
+    let marcin = new Student('Marcin', 'Peck', 30);
+    marcin.enroll('MATH')
+
+    display(marcin.__proto__);
+    display(marcin.__proto__.__proto__);
+    display(marcin.__proto__.__proto__.__proto__);
+
+    display(marcin.getCourses());
 
 })();
