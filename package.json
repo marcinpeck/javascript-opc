@@ -1,0 +1,20 @@
+{
+  "name": "javascript-opc",
+  "version": "1.0.0",
+  "description": "This is the demo code for the Pluralsight course at https://app.pluralsight.com/courses/javascript-objects-prototypes-and-classes",
+  "main": "demo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcinpeck/javascript-opc.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marcinpeck/javascript-opc/issues"
+  },
+  "homepage": "https://github.com/marcinpeck/javascript-opc#readme"
+}
